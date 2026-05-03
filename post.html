@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFAULT - POST</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="highlight.css">
+    <script src="marked.min.js"></script>
+    <script src="highlight.min.js"></script>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+    </nav>
+
+    <div class="content">
+<div class="news-container">
+            <div class="post-back"><a href="blog.html">&#8592; back to blog</a></div>
+            <div id="post" class="post"></div>
+            <div class="eof">-- EOF --</div>
+        </div>
+    </div>
+
+    <script>
+        async function initPost() {
+            const params = new URLSearchParams(window.location.search);
+            const file = params.get("file");
+            const postDiv = document.getElementById("post");
+
+            if (!file) {
+                postDiv.innerHTML = "<p>no post selected.</p>";
+                return;
+            }
+
+            try {
+                const res = await fetch(`posts/${file}.md`);
+                if (!res.ok) throw new Error("not found");
+                const text = await res.text();
+                postDiv.innerHTML = marked.parse(text);
+                postDiv.querySelectorAll("pre code").forEach(el => {
+                    if (!el.className || el.className.trim() === "") {
+                        const result = hljs.highlightAuto(el.textContent);
+                        el.innerHTML = result.value;
+                        el.classList.add("hljs");
+                    } else {
+                        hljs.highlightElement(el);
+                    }
+                });
+                postDiv.querySelectorAll("pre").forEach(pre => {
+                    const blood = document.createElement("img");
+                    blood.src = "assets/blood.gif";
+                    blood.className = "blood-drip";
+                    pre.appendChild(blood);
+                });
+            } catch {
+                postDiv.innerHTML = "<p style='color:red'>[ERROR] could not load post.</p>";
+            }
+        }
+
+        initPost();
+    </script>
+    <img id="heart-widget" src="assets/heart-1.gif" alt="" style="width:120px;">
+    <img id="custom-cursor" src="assets/gore_cursor.gif" alt="">
+    <script src="cursor.js"></script>
+</body>
+</html>
