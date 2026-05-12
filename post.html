@@ -18,10 +18,11 @@
     </nav>
 
     <div class="content">
-<div class="news-container">
+        <div class="news-container">
             <div class="post-back"><a href="blog.html">&#8592; back to blog</a></div>
             <div id="post" class="post"></div>
             <div class="eof">-- EOF --</div>
+            <div class="mystery-seal" style="margin-top:14px;">3301 &nbsp;·&nbsp; follow the white rabbit &nbsp;·&nbsp; 50</div>
         </div>
     </div>
 
@@ -50,21 +51,12 @@
                         hljs.highlightElement(el);
                     }
                 });
-                postDiv.querySelectorAll("pre").forEach(pre => {
-                    const blood = document.createElement("img");
-                    blood.src = "assets/blood.gif";
-                    blood.className = "blood-drip";
-                    pre.appendChild(blood);
-                });
             } catch {
-                postDiv.innerHTML = "<p style='color:red'>[ERROR] could not load post.</p>";
+                postDiv.innerHTML = "<p style='color:#8b1a1a'>[ERROR] could not load post.</p>";
             }
         }
 
         initPost();
     </script>
-    <img id="heart-widget" src="assets/heart-1.gif" alt="" style="width:120px;">
-    <img id="custom-cursor" src="assets/gore_cursor.gif" alt="">
-    <script src="cursor.js"></script>
 </body>
 </html>
