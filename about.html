@@ -9,126 +9,106 @@
 <body>
 
     <nav class="navbar">
-        <a href="index.html">Home</a>
-        <a href="blog.html">Blog</a>
-        <a href="about.html" class="active"><b>About</b></a>
+        <span class="navbar-brand">EFAULT</span>
+        <button class="nav-trigger" id="navTrigger" aria-label="Open menu">&#9776;</button>
     </nav>
+
+    <div class="rdr-menu-overlay" id="rdrMenuOverlay">
+        <div class="rdr-menu-dimmer" id="rdrMenuDimmer"></div>
+        <nav class="rdr-menu-panel">
+            <img src="assets/antique.png" class="menu-antique" alt="">
+            <a href="index.html" class="rdr-menu-item">Home</a>
+            <a href="blog.html"  class="rdr-menu-item">Blog</a>
+            <a href="about.html" class="rdr-menu-item active">About</a>
+            <button class="rdr-menu-close" id="rdrMenuClose">&#10005; &nbsp; Close</button>
+        </nav>
+    </div>
 
     <div class="content">
 
-        <div class="page-header">[ ABOUT ]</div>
+        <!-- Sadie portrait — atmospheric banner above the document -->
+        <figure class="sadie-figure">
+            <img src="assets/sadie.png" alt="" class="sadie-portrait">
+            <div class="sadie-vignette"></div>
+        </figure>
 
-        <div class="terms">
+        <div class="rdr-doc">
 
-            <!-- Dossier Card -->
-            <div class="dossier">
+            <div class="rdoc-rule"></div>
 
-                <div class="dossier-top-bar">
-                    <span class="dossier-star">✦</span>
-                    DOSSIER
-                    <span class="dossier-star">✦</span>
+            <div class="rdoc-header">
+                <div class="rdoc-label">Subject Dossier</div>
+                <div class="rdoc-name">Efault</div>
+                <div class="rdoc-subtitle">Security Enthusiast &nbsp;·&nbsp; DevSecOps</div>
+            </div>
+
+            <div class="rdoc-rule"></div>
+
+            <div class="rdoc-body">
+
+                <p>Interest lies in tech, security and open source. A privacy enthusiast who believes in the right to reverse, exploit, and understand any system. Currently focused on development and DevSecOps.</p>
+
+                <div class="rdoc-row">
+                    <span class="rdoc-key">Handle</span>
+                    <span class="rdoc-dots"></span>
+                    <span class="rdoc-val">EFAULT</span>
                 </div>
-
-                <!-- Profile row -->
-                <div class="dossier-profile">
-                    <div class="dossier-avatar">
-                        <img src="assets/sad-girl.gif" alt="profile"
-                             onerror="this.style.display='none'; this.parentNode.innerHTML='[ no photo ]'">
-                        <div class="dossier-avatar-label">SUBJECT PHOTO</div>
-                    </div>
-                    <div class="dossier-stats">
-                        <div class="stat-row">
-                            <span class="stat-key">Handle</span>
-                            <span class="stat-dots"></span>
-                            <span class="stat-val">EFAULT</span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-key">Role</span>
-                            <span class="stat-dots"></span>
-                            <span class="stat-val">Security Enthusiast</span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-key">Location</span>
-                            <span class="stat-dots"></span>
-                            <span class="stat-val">52.216802, 21.018334</span>
-                        </div>
-                        <div class="stat-row">
-                            <span class="stat-key">Focus</span>
-                            <span class="stat-dots"></span>
-                            <span class="stat-val">Dev / DevSecOps</span>
-                        </div>
-                        <p class="dossier-bio">
-                            Interest lies in tech, security and open source. Privacy enthusiast.
-                            Believes in the right to reverse, exploit, and understand any system.
-                        </p>
-                    </div>
+                <div class="rdoc-row">
+                    <span class="rdoc-key">Role</span>
+                    <span class="rdoc-dots"></span>
+                    <span class="rdoc-val">Security Enthusiast</span>
                 </div>
-
-                <div class="dossier-divider">&#9135;&#9135;&#9135; ✦ &#9135;&#9135;&#9135;</div>
-
-                <!-- Tech Stack -->
-                <div class="ledger-section">
-                    <div class="ledger-label">Languages</div>
-                    <ul class="stack-items">
-                        <li>Python</li>
-                        <li>C</li>
-                        <li>Go</li>
-                        <li>Bash</li>
-                        <li>Assembly</li>
-                        <li>PowerShell</li>
-                    </ul>
+                <div class="rdoc-row">
+                    <span class="rdoc-key">Location</span>
+                    <span class="rdoc-dots"></span>
+                    <span class="rdoc-val">52.216802, 21.018334</span>
                 </div>
-
-                <div class="ledger-section">
-                    <div class="ledger-label">Security Tools</div>
-                    <ul class="stack-items">
-                        <li>nmap</li>
-                        <li>Burp Suite</li>
-                        <li>Wireshark</li>
-                        <li>Ghidra</li>
-                        <li>Metasploit</li>
-                        <li>GDB / pwndbg</li>
-                    </ul>
-                </div>
-
-                <div class="ledger-section">
-                    <div class="ledger-label">Development</div>
-                    <ul class="stack-items">
-                        <li>Linux</li>
-                        <li>Git</li>
-                        <li>Docker</li>
-                        <li>VS Code</li>
-                        <li>Vim</li>
-                    </ul>
-                </div>
-
-                <div class="ledger-section">
-                    <div class="ledger-label">Interests</div>
-                    <ul class="stack-items">
-                        <li>CTF</li>
-                        <li>Reverse Engineering</li>
-                        <li>Binary Exploitation</li>
-                        <li>Web Security</li>
-                        <li>OSINT</li>
-                    </ul>
-                </div>
-
-                <div class="dossier-divider">&#9135;&#9135;&#9135; ✦ &#9135;&#9135;&#9135;</div>
-
-                <div class="dossier-contact">
-                    Contact: <a href="mailto:pgp33011337192005@gmail.com">pgp33011337192005@gmail.com</a>
+                <div class="rdoc-row">
+                    <span class="rdoc-key">Focus</span>
+                    <span class="rdoc-dots"></span>
+                    <span class="rdoc-val">Dev / DevSecOps</span>
                 </div>
 
             </div>
-            <!-- /Dossier Card -->
+
+            <div class="rdoc-divider">──── ✦ ────</div>
+
+            <div class="rdoc-section">
+                <div class="rdoc-section-title">Languages</div>
+                <div class="rdoc-inline">Python &nbsp;·&nbsp; C &nbsp;·&nbsp; Go &nbsp;·&nbsp; Bash &nbsp;·&nbsp; Assembly &nbsp;·&nbsp; PowerShell</div>
+            </div>
+
+            <div class="rdoc-section">
+                <div class="rdoc-section-title">Security Tools</div>
+                <div class="rdoc-inline">nmap &nbsp;·&nbsp; Burp Suite &nbsp;·&nbsp; Wireshark &nbsp;·&nbsp; Ghidra &nbsp;·&nbsp; Metasploit &nbsp;·&nbsp; GDB / pwndbg</div>
+            </div>
+
+            <div class="rdoc-section">
+                <div class="rdoc-section-title">Development</div>
+                <div class="rdoc-inline">Linux &nbsp;·&nbsp; Git &nbsp;·&nbsp; Docker &nbsp;·&nbsp; VS Code &nbsp;·&nbsp; Vim</div>
+            </div>
+
+            <div class="rdoc-section">
+                <div class="rdoc-section-title">Interests</div>
+                <div class="rdoc-inline">CTF &nbsp;·&nbsp; Reverse Engineering &nbsp;·&nbsp; Binary Exploitation &nbsp;·&nbsp; Web Security &nbsp;·&nbsp; OSINT</div>
+            </div>
+
+            <div class="rdoc-divider">──── ✦ ────</div>
+
+            <div class="rdoc-closing">
+                <a href="mailto:pgp33011337192005@gmail.com">pgp33011337192005@gmail.com</a>
+            </div>
+
+            <div class="rdoc-rule"></div>
 
         </div>
 
         <div class="site-footer">
             <p style="font-size:10px;">&copy; EFAULT - All rights reserved.</p>
-            <div class="mystery-seal">beware &nbsp;·&nbsp; the answer is within &nbsp;·&nbsp; 3301</div>
+            <div class="mystery-seal">INTERCONNECTEDNESS</div>
         </div>
 
     </div>
+    <script src="menu.js"></script>
 </body>
 </html>

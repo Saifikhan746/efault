@@ -12,15 +12,27 @@
 <body>
 
     <nav class="navbar">
-        <a href="index.html">Home</a>
-        <a href="blog.html">Blog</a>
-        <a href="about.html">About</a>
+        <span class="navbar-brand">EFAULT</span>
+        <button class="nav-trigger" id="navTrigger" aria-label="Open menu">&#9776;</button>
     </nav>
 
+    <div class="rdr-menu-overlay" id="rdrMenuOverlay">
+        <div class="rdr-menu-dimmer" id="rdrMenuDimmer"></div>
+        <nav class="rdr-menu-panel">
+            <img src="assets/antique.png" class="menu-antique" alt="">
+            <a href="index.html" class="rdr-menu-item">Home</a>
+            <a href="blog.html"  class="rdr-menu-item active">Blog</a>
+            <a href="about.html" class="rdr-menu-item">About</a>
+            <button class="rdr-menu-close" id="rdrMenuClose">&#10005; &nbsp; Close</button>
+        </nav>
+    </div>
+
     <div class="content">
-        <div class="news-container">
+        <div class="rdr-letter">
             <div class="post-back"><a href="blog.html">&#8592; back to blog</a></div>
+            <div class="rdr-letter-rule"></div>
             <div id="post" class="post"></div>
+            <div class="rdr-letter-rule rdr-letter-rule--bottom"></div>
             <div class="eof">-- EOF --</div>
             <div class="mystery-seal" style="margin-top:14px;">3301 &nbsp;·&nbsp; follow the white rabbit &nbsp;·&nbsp; 50</div>
         </div>
@@ -58,5 +70,6 @@
 
         initPost();
     </script>
+    <script src="menu.js"></script>
 </body>
 </html>

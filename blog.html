@@ -10,19 +10,31 @@
 <body>
 
     <nav class="navbar">
-        <a href="index.html">Home</a>
-        <a href="blog.html" class="active"><b>Blog</b></a>
-        <a href="about.html">About</a>
+        <span class="navbar-brand">EFAULT</span>
+        <button class="nav-trigger" id="navTrigger" aria-label="Open menu">&#9776;</button>
     </nav>
+
+    <div class="rdr-menu-overlay" id="rdrMenuOverlay">
+        <div class="rdr-menu-dimmer" id="rdrMenuDimmer"></div>
+        <nav class="rdr-menu-panel">
+            <img src="assets/antique.png" class="menu-antique" alt="">
+            <a href="index.html" class="rdr-menu-item">Home</a>
+            <a href="blog.html"  class="rdr-menu-item active">Blog</a>
+            <a href="about.html" class="rdr-menu-item">About</a>
+            <button class="rdr-menu-close" id="rdrMenuClose">&#10005; &nbsp; Close</button>
+        </nav>
+    </div>
 
     <div class="content">
 
-        <div class="page-header">[ THOUGHTS ]</div>
+        <div class="rdr-letter">
+            <div class="rdr-letter-rule"></div>
+            <div class="rdr-letter-title">Thoughts</div>
 
-        <div class="terms">
-            <p><strong>Blog Archive — click any entry to read the full post.</strong></p>
             <div id="posts"></div>
-            <p style="margin-top:30px; border-top:1px solid #1f1340; padding-top:10px; color:#4b5563;">
+
+            <div class="rdr-letter-rule rdr-letter-rule--bottom"></div>
+            <p class="rdr-letter-footer">
                 All entries are written by site staff. Mail suggestions to
                 <a href="mailto:pgp33011337192005@gmail.com">pgp33011337192005@gmail.com</a>
             </p>
@@ -30,11 +42,12 @@
 
         <div class="site-footer">
             <p style="font-size:10px;">&copy; 2000 EFAULT - All rights reserved.</p>
-            <div class="mystery-seal">the cicada sings once &nbsp;·&nbsp; then silence &nbsp;·&nbsp; f57</div>
+            <div class="mystery-seal">SEPERATION ANXIETY</div>
         </div>
 
     </div>
 
     <script src="app.js"></script>
+    <script src="menu.js"></script>
 </body>
 </html>

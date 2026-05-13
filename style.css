@@ -1,146 +1,401 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rajdhani:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rye&family=Cinzel+Decorative:wght@400;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 
 * {
     box-sizing: border-box;
 }
 
 body {
-    background: #0f0a1a;
-    color: #d1d5db;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-size: 14px;
+    background-color: #070101;
+    background-image:
+        radial-gradient(ellipse at 15% 35%, rgba(140, 0, 0, 0.45) 0%, transparent 52%),
+        radial-gradient(ellipse at 85% 65%, rgba(100, 0, 0, 0.35) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 5%,  rgba(120, 0, 0, 0.30) 0%, transparent 42%);
+    background-attachment: fixed;
+    color: #b89060;
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 16px;
     margin: 0;
     padding: 0;
-    line-height: 1.6;
+    line-height: 1.8;
+    min-height: 100vh;
 }
 
 a {
-    color: #c084fc;
+    color: #a0601a;
     text-decoration: none;
 }
 
 a:hover {
-    color: #e9d5ff;
+    color: #cc8010;
     text-decoration: underline;
 }
 
 /* ── NAVBAR ─────────────────────────────── */
 .navbar {
-    background: rgba(10, 6, 18, 0.92);
+    background: rgba(5, 1, 1, 0.96);
     padding: 0 32px;
     height: 52px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     gap: 4px;
-    font-size: 13px;
-    font-weight: 500;
-    border-bottom: 1px solid rgba(139, 92, 246, 0.15);
+    font-family: 'Cinzel Decorative', serif;
+    border-bottom: 1px solid #6b0000;
     position: sticky;
     top: 0;
     z-index: 100;
-    backdrop-filter: blur(8px);
 }
 
-.navbar a {
-    color: #9ca3af;
+.navbar-brand {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 15px;
+    color: #ffffff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    user-select: none;
+    transition: color 0.15s;
+}
+
+.navbar-brand:hover { color: #000000; }
+
+.nav-trigger {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 22px;
+    cursor: pointer;
+    padding: 4px 6px;
+    line-height: 1;
+    transition: color 0.15s;
+}
+
+.nav-trigger:hover { color: #000000; }
+
+/* ── RDR2 PAUSE MENU OVERLAY ─────────────── */
+.rdr-menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.rdr-menu-overlay.is-open {
+    visibility: visible;
+    pointer-events: all;
+}
+
+/* Right side — grayscale dim */
+.rdr-menu-dimmer {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.80);
+    backdrop-filter: grayscale(1) brightness(0.28);
+    opacity: 0;
+    transition: opacity 0.45s;
+    cursor: pointer;
+}
+
+.rdr-menu-overlay.is-open .rdr-menu-dimmer {
+    opacity: 1;
+}
+
+.rdr-menu-overlay.is-open.is-closing .rdr-menu-dimmer {
+    opacity: 0;
+    transition: opacity 0.42s ease-in;
+}
+
+/* Fractal-noise filter wrapper — sits as flex item */
+.rdr-menu-wrap {
+    flex-shrink: 0;
+    filter: url(#rdr-torn);
+}
+
+.rdr-menu-panel {
+    width: 360px;
+    height: 100vh;
+    background: linear-gradient(180deg, #0a0000 0%, #1e0000 10%, #5a0000 30%, #8b0000 50%, #5a0000 70%, #1e0000 90%, #0a0000 100%);
+    box-shadow: inset -18px 0 45px rgba(0,0,0,0.75);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 48px 64px 40px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+
+    clip-path: polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%);
+    transition: clip-path 0.60s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ── Menu blood drips ─────────────────────────────────────── */
+.menu-drip {
+    position: absolute;
+    top: 0;
+    width: var(--md-w, 3px);
+    background: linear-gradient(180deg, rgba(140,0,0,0.95), #c20000 40%, #e80000 70%, rgba(160,0,0,0.15));
+    border-radius: 0 0 60% 60%;
+    height: 0;
+    opacity: 0;
+    animation: menu-drip-fall var(--md-dur, 5s) var(--md-delay, 0s) ease-in infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+@keyframes menu-drip-fall {
+    0%   { height: 0;              opacity: 0;    }
+    4%   {                         opacity: 0.92; }
+    60%  { height: var(--md-h);    opacity: 0.88; }
+    88%  { height: var(--md-h);    opacity: 0.55; }
+    100% { height: var(--md-h);    opacity: 0;    }
+}
+
+/* ── Menu blood splatter spots ────────────────────────────── */
+.menu-splat-spot {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(170,0,0,0.72) 15%, rgba(100,0,0,0.38) 55%, transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.rdr-menu-overlay.is-open .rdr-menu-panel {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+}
+
+/* Drain-down closing animation */
+.rdr-menu-overlay.is-open.is-closing .rdr-menu-panel {
+    clip-path: polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%);
+    transition: clip-path 0.44s cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/* Antique image — top of the red panel */
+.menu-antique {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    filter: brightness(0);
+    opacity: 0.85;
+    pointer-events: none;
+    transform: translateX(-50%);
+}
+
+/* Menu links */
+.rdr-menu-item {
+    display: block;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 30px;
+    color: #ffffff;
     text-decoration: none;
-    padding: 6px 14px;
-    border-radius: 6px;
-    transition: background 0.15s, color 0.15s;
-    letter-spacing: 0.01em;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    line-height: 1.45;
+    transition: color 0.18s, transform 0.18s, text-shadow 0.18s, letter-spacing 0.18s;
+    text-shadow: 1px 2px 8px rgba(0, 0, 0, 0.70);
+    width: 100%;
+    text-align: center;
 }
 
-.navbar a:hover {
-    color: #fff;
-    background: rgba(139, 92, 246, 0.12);
+.rdr-menu-item:hover {
+    color: #ffe8a0;
     text-decoration: none;
+    transform: translateX(6px) scale(1.06);
+    letter-spacing: 5px;
+    text-shadow: 0 0 18px rgba(255, 200, 80, 0.65), 1px 2px 8px rgba(0,0,0,0.70);
 }
 
-.navbar a.active,
-.navbar a b {
+.rdr-menu-item.active {
+    color: #ffe8a0;
+}
+
+/* Close button */
+.rdr-menu-close {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.30);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 2px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    white-space: nowrap;
+    transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.rdr-menu-close:hover {
     color: #fff;
-    font-weight: 600;
-    background: rgba(139, 92, 246, 0.18);
+    background: rgba(0,0,0,0.55);
+    border-color: rgba(255,255,255,0.75);
 }
 
 /* ── HERO / SITE HEADER ─────────────────── */
 .site-header {
-    background: linear-gradient(160deg, #6b21a8 0%, #7c3aed 45%, #6d28d9 100%);
+    background: transparent;
     text-align: center;
-    padding: 64px 20px 56px;
+    padding: 48px 20px 44px;
     position: relative;
-    overflow: hidden;
 }
 
-/* subtle pattern overlay */
+.hero-gif {
+    display: block;
+    margin: 0 auto;
+    max-width: 680px;
+    width: 92%;
+}
+
+.hero-tagline {
+    font-family: 'Crimson Text', serif;
+    font-size: 12px;
+    letter-spacing: 7px;
+    color: rgba(160, 80, 40, 0.65);
+    text-transform: uppercase;
+    margin-top: 20px;
+}
+
+/* Scanline grain overlay */
 .site-header::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-image: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.04) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04) 0%, transparent 40%);
+    background-image:
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.22) 2px,
+            rgba(0, 0, 0, 0.22) 4px
+        );
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+/* Subtle 3301 ghost */
+.site-header::after {
+    content: '3301';
+    position: absolute;
+    bottom: 8px;
+    right: 24px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 78px;
+    color: rgba(180, 0, 0, 0.05);
+    pointer-events: none;
+    user-select: none;
+    line-height: 1;
+}
+
+/* ── WANTED POSTER ──────────────────────── */
+.wanted-poster {
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 36px 64px 40px;
+    background: linear-gradient(160deg, #100400 0%, #1c0600 45%, #0c0200 100%);
+    border: 3px solid #7a3e10;
+    text-align: center;
+}
+
+.wanted-poster::before {
+    content: '';
+    position: absolute;
+    inset: 9px;
+    border: 1px solid rgba(150, 65, 15, 0.40);
     pointer-events: none;
 }
 
-.site-banner {
-    display: block;
-    margin: 0 auto;
-    max-width: 380px;
-    filter: brightness(0) invert(1);
-    opacity: 0.95;
-    position: relative;
+.poster-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 11px;
+    letter-spacing: 14px;
+    color: #b8904a;
+    text-transform: uppercase;
+    margin-bottom: 4px;
 }
 
-.hero-logos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    position: relative;
+.poster-status {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 10px;
+    letter-spacing: 7px;
+    color: #8b0000;
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
-.hero-logo {
-    width: 64px;
-    height: 64px;
-    object-fit: contain;
-    opacity: 0.9;
+.poster-rule {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #7a3e10 20%, #c8701a 50%, #7a3e10 80%, transparent);
+    margin: 8px 0;
 }
 
-.site-title-text {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 64px;
-    font-weight: 700;
-    color: #000;
+.poster-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 86px;
+    color: #ffffff;
     letter-spacing: 8px;
     text-transform: uppercase;
-    margin: 0;
+    margin: 6px 0;
     line-height: 1;
-    position: relative;
+    animation: blood-pulse 3.5s ease-in-out infinite;
 }
 
-.site-subtitle {
-    font-size: 13px;
-    color: rgba(255,255,255,0.55);
-    letter-spacing: 4px;
-    margin-top: 12px;
+.poster-tagline {
+    font-family: 'Crimson Text', serif;
+    font-size: 11px;
+    letter-spacing: 7px;
+    color: rgba(190, 130, 60, 0.65);
     text-transform: uppercase;
-    font-weight: 400;
-    position: relative;
+    margin: 10px 0 6px;
+}
+
+.poster-reward {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: #9a6828;
+    margin-top: 10px;
+}
+
+@keyframes blood-pulse {
+    0%, 100% {
+        text-shadow:
+            0 0 8px  rgba(220, 0, 0, 0.80),
+            0 0 24px rgba(140, 0, 0, 0.50),
+            0 2px 12px rgba(0, 0, 0, 0.95);
+    }
+    50% {
+        text-shadow:
+            0 0 18px rgba(255, 0, 0, 1.00),
+            0 0 50px rgba(200, 0, 0, 0.80),
+            0 0 80px rgba(120, 0, 0, 0.40),
+            0 2px 12px rgba(0, 0, 0, 0.95);
+    }
 }
 
 /* ── CONTENT WRAPPER ────────────────────── */
 .content {
     text-align: center;
-    padding: 0 24px 48px;
+    padding: 20px 24px 48px;
 }
 
 /* ── PAGE HEADER ────────────────────────── */
 .page-header {
+    font-family: 'Cinzel Decorative', serif;
     font-size: 11px;
-    font-weight: 600;
-    color: #7c3aed;
-    letter-spacing: 3px;
+    font-weight: 700;
+    color: #cc0000;
+    letter-spacing: 5px;
     text-align: center;
     margin: 32px 0 6px;
     text-transform: uppercase;
@@ -149,165 +404,227 @@ a:hover {
 /* ── PROMO BANNER ───────────────────────── */
 .promo-banner {
     display: inline-block;
-    background: rgba(139, 92, 246, 0.1);
-    color: #c084fc;
-    font-size: 14px;
+    background: rgba(139, 0, 0, 0.08);
+    color: #a0601a;
+    font-size: 15px;
     padding: 10px 24px;
-    border: 1px solid rgba(139, 92, 246, 0.25);
-    border-radius: 8px;
+    border: 1px solid rgba(139, 0, 0, 0.35);
     text-decoration: none;
     width: auto;
     margin: 8px 0;
-    font-weight: 500;
-    letter-spacing: 0.02em;
+    font-family: 'Crimson Text', serif;
+    letter-spacing: 0.05em;
 }
 
 .promo-banner:hover {
-    background: rgba(139, 92, 246, 0.18);
-    border-color: rgba(139, 92, 246, 0.5);
-    color: #e9d5ff;
+    background: rgba(139, 0, 0, 0.18);
+    border-color: rgba(139, 0, 0, 0.6);
+    color: #cc8010;
     text-decoration: none;
 }
 
 /* ── ALPHABET NAV ───────────────────────── */
 .alpha-nav {
-    font-size: 12px;
-    color: #374151;
+    font-family: 'Crimson Text', serif;
+    font-size: 13px;
+    color: #3d1a10;
     letter-spacing: 2px;
     margin: 10px 0;
     word-spacing: 4px;
 }
 
-.alpha-nav a { color: #4b5563; text-decoration: none; }
-.alpha-nav a:hover { color: #7c3aed; text-decoration: none; }
+.alpha-nav a { color: #5a2818; text-decoration: none; }
+.alpha-nav a:hover { color: #cc0000; text-decoration: none; }
 
 /* ── SEARCH ─────────────────────────────── */
-.mp3-search { font-size: 13px; margin: 12px 0; color: #6b7280; }
+.mp3-search { font-size: 14px; margin: 12px 0; color: #5a2818; }
 .mp3-search input[type="text"] {
-    background: #1a1030;
-    border: 1px solid #2d1f4e;
-    border-radius: 6px;
-    color: #e5e7eb;
+    background: rgba(6, 1, 1, 0.92);
+    border: 1px solid #5a0000;
+    color: #b89060;
     padding: 5px 10px;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Crimson Text', serif;
     outline: none;
 }
-.mp3-search input[type="text"]:focus { border-color: #7c3aed; }
+.mp3-search input[type="text"]:focus { border-color: #cc0000; }
 .mp3-search input[type="submit"] {
-    background: #7c3aed;
+    background: #8b0000;
     border: none;
-    border-radius: 6px;
-    color: #fff;
+    color: #c4a882;
     cursor: pointer;
     padding: 5px 14px;
-    font-family: 'Inter', sans-serif;
-    font-weight: 500;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
     margin-left: 4px;
 }
-.mp3-search input[type="submit"]:hover { background: #6d28d9; }
+.mp3-search input[type="submit"]:hover { background: #aa0000; }
 
 /* ── TERMS ──────────────────────────────── */
 .terms {
     text-align: left;
     max-width: 780px;
     margin: 0 auto;
-    font-size: 13px;
-    line-height: 1.75;
-    color: #9ca3af;
+    font-size: 16px;
+    line-height: 1.9;
+    color: #9c7850;
+    font-family: 'Crimson Text', serif;
 }
 
 .terms ol { padding-left: 22px; }
-.terms li { margin-bottom: 5px; }
-.terms a { color: #c084fc; }
-.terms strong { color: #e5e7eb; }
+.terms li { margin-bottom: 6px; }
+.terms a { color: #a0601a; }
+.terms strong { color: #c4a882; }
 
 /* ── FOOTER ─────────────────────────────── */
 .site-footer {
     text-align: center;
     margin-top: 48px;
     padding-bottom: 24px;
-    color: #374151;
-    font-size: 12px;
+    color: #3d1a10;
+    font-size: 10px;
+    font-family: 'Cinzel Decorative', serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-/* ── NEWS CONTAINER ─────────────────────── */
-.news-container {
+/* ── RDR LETTER DOCUMENT ────────────────── */
+.rdr-letter {
     max-width: 780px;
-    margin: 0 auto;
-    padding: 24px;
+    margin: 40px auto 0;
+    padding: 0 56px 48px;
+    position: relative;
     text-align: left;
+    overflow: visible;
 }
+
+/* torn paper background — filter only hits this layer, not the text */
+.rdr-letter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(7, 3, 3, 0.91);
+    filter: url(#rdr-torn);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.rdr-letter > * {
+    position: relative;
+    z-index: 1;
+}
+
+.rdr-letter-rule {
+    height: 1px;
+    background: rgba(220, 210, 195, 0.30);
+    margin: 0 0 36px;
+}
+
+.rdr-letter-rule--bottom {
+    margin: 32px 0 20px;
+}
+
+.rdr-letter-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.35;
+    padding: 32px 0 30px;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.rdr-letter-footer {
+    font-family: 'Crimson Text', serif;
+    font-size: 13px;
+    color: #4a2810;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.rdr-letter-footer a { color: #6a3818; }
 
 /* ── POST LIST ──────────────────────────── */
 .post-item {
-    padding: 12px 0;
-    border-bottom: 1px solid #1a1030;
+    padding: 14px 0;
+    border-bottom: 1px solid #1e0a04;
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: baseline;
+    gap: 14px;
 }
 
 .post-item a {
-    color: #e5e7eb;
+    color: #e8ddd0;
     text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 400;
     flex: 1;
+    font-family: 'Crimson Text', serif;
+    transition: color 0.15s;
 }
 
 .post-item a:hover {
-    color: #c084fc;
-    text-decoration: none;
+    color: #ffffff;
 }
 
 .post-date {
-    color: #374151;
-    font-size: 11px;
+    color: #6b3820;
+    font-size: 12px;
     white-space: nowrap;
+    font-family: 'Cinzel Decorative', serif;
+    letter-spacing: 1px;
     font-variant-numeric: tabular-nums;
 }
 
 /* ── POST ───────────────────────────────── */
 .post {
-    font-size: 14px;
-    color: #d1d5db;
-    line-height: 1.8;
+    font-size: 18px;
+    color: #e8ddd0;
+    line-height: 1.95;
     text-align: left;
+    font-family: 'Crimson Text', serif;
 }
 
-.post p { margin: 10px 0; }
+.post p { margin: 12px 0; }
 
 /* HEADINGS */
 .post h1 {
-    font-size: 22px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 30px;
     font-weight: 700;
-    color: #fff;
-    border-bottom: 1px solid #1a1030;
-    padding-bottom: 8px;
-    margin: 0 0 16px;
-    letter-spacing: -0.3px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 1.35;
+    margin: 0 0 28px;
+    letter-spacing: 1px;
 }
 
 .post h2 {
-    font-size: 17px;
-    font-weight: 600;
-    color: #f3f4f6;
-    border-bottom: 1px solid #120d22;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: #e8e0d0;
+    border-bottom: 1px solid #2a0e08;
     padding-bottom: 5px;
     margin: 28px 0 10px;
+    letter-spacing: 2px;
 }
 
 .post h3 {
-    font-size: 14px;
-    font-weight: 600;
-    color: #e5e7eb;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #d0c0a0;
     margin: 20px 0 8px;
+    letter-spacing: 2px;
 }
 
 .post h4, .post h5, .post h6 {
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
-    color: #9ca3af;
+    color: #7a5030;
     margin: 14px 0 6px;
 }
 
@@ -318,21 +635,19 @@ a:hover {
 
 /* INLINE CODE */
 .post code {
-    background: #1a1030;
+    background: rgba(5, 0, 0, 0.92);
     padding: 1px 6px;
-    border: 1px solid #2d1f4e;
-    border-radius: 4px;
-    color: #c084fc;
+    border: 1px solid #2a0e08;
+    color: #cc0000;
     font-family: 'Courier New', monospace;
     font-size: 12px;
 }
 
 /* CODE BLOCK */
 .post pre {
-    background: #0a0614;
-    border: 1px solid #1a1030;
-    border-left: 3px solid #7c3aed;
-    border-radius: 0 6px 6px 0;
+    background: rgba(4, 0, 0, 0.94);
+    border: 1px solid #2a0e08;
+    border-left: 3px solid #8b0000;
     margin: 14px 0;
     padding: 14px 16px;
     overflow-x: auto;
@@ -343,209 +658,44 @@ a:hover {
     background: none;
     border: none;
     padding: 0;
-    border-radius: 0;
     color: inherit;
     font-size: 13px;
 }
 
 /* HR */
-.post hr { border: none; border-top: 1px solid #1a1030; margin: 20px 0; }
+.post hr { border: none; border-top: 1px solid #2a0e08; margin: 20px 0; }
 
 /* BLOCKQUOTE */
 .post blockquote {
-    border-left: 3px solid #7c3aed;
+    border-left: 3px solid #8b0000;
     margin: 12px 0;
     padding: 4px 14px;
-    color: #6b7280;
+    color: #5a3020;
     font-style: italic;
-    background: #0a0614;
+    background: rgba(4, 0, 0, 0.90);
 }
 
 /* BACK LINK */
 .post-back {
-    font-size: 12px;
+    font-family: 'Crimson Text', serif;
+    font-size: 14px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #120d22;
+    border-bottom: 1px solid #1a0808;
     padding-bottom: 12px;
 }
 
-.post-back a { color: #4b5563; text-decoration: none; }
-.post-back a:hover { color: #c084fc; text-decoration: none; }
+.post-back a { color: #5a2818; text-decoration: none; }
+.post-back a:hover { color: #a0601a; text-decoration: none; }
 
-/* ── ABOUT / DOSSIER ────────────────────── */
-.dossier {
-    max-width: 700px;
-    margin: 16px auto 32px;
-    border: 1px solid #1f1340;
-    border-radius: 10px;
-    padding: 28px;
-    text-align: left;
-    background: #120d24;
-}
-
-.dossier::before { display: none; }
-
-.dossier-top-bar {
-    font-size: 11px;
-    font-weight: 600;
-    color: #7c3aed;
-    text-align: center;
-    letter-spacing: 5px;
-    margin-bottom: 24px;
-    text-transform: uppercase;
-}
-
-.dossier-star { color: #2d1f4e; margin: 0 10px; }
-
-.dossier-profile {
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.dossier-avatar { min-width: 110px; width: 110px; }
-
-.dossier-avatar img {
-    width: 110px;
-    height: 110px;
-    object-fit: cover;
-    display: block;
-    border-radius: 8px;
-    border: 1px solid #2d1f4e;
-    filter: grayscale(30%) brightness(0.85);
-}
-
-.dossier-avatar-label {
-    font-size: 9px;
-    color: #374151;
-    letter-spacing: 2px;
-    margin-top: 6px;
-    text-transform: uppercase;
-    text-align: center;
-}
-
-.dossier-stats { flex: 1; }
-
-.stat-row {
-    display: flex;
-    align-items: baseline;
-    margin-bottom: 9px;
-    font-size: 13px;
-}
-
-.stat-key {
-    font-size: 11px;
-    font-weight: 600;
-    color: #7c3aed;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    white-space: nowrap;
-    min-width: 84px;
-}
-
-.stat-dots {
-    flex: 1;
-    border-bottom: 1px dotted #1f1340;
-    margin: 0 10px 3px;
-}
-
-.stat-val { color: #d1d5db; font-size: 13px; }
-
-.stat-row::before { display: none; }
-
-.dossier-bio {
-    margin-top: 12px;
-    font-size: 13px;
-    color: #6b7280;
-    font-style: italic;
-    line-height: 1.65;
-    border-left: 2px solid #2d1f4e;
-    padding-left: 12px;
-}
-
-.dossier-divider {
-    text-align: center;
-    color: #1f1340;
-    font-size: 12px;
-    letter-spacing: 4px;
-    margin: 18px 0;
-}
-
-.ledger-section { margin-bottom: 18px; }
-
-.ledger-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: #7c3aed;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-}
-
-.ledger-label::before { content: ''; }
-.ledger-label::after  { content: ''; }
-
-.stack-items {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.stack-items li {
-    background: #0f0a1a;
-    border: 1px solid #1f1340;
-    border-radius: 4px;
-    padding: 3px 10px;
-    font-size: 12px;
-    color: #9ca3af;
-}
-
-.stack-items li:hover {
-    border-color: #7c3aed;
-    color: #e5e7eb;
-}
-
-.dossier-contact {
-    font-size: 12px;
-    color: #374151;
-    letter-spacing: 1px;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-.dossier-contact a { color: #7c3aed; }
-.dossier-contact a:hover { color: #c084fc; }
 
 /* SWORD BANNER */
 .sword-banner { display: none; }
 
-/* ── CICADA 3301 / BLUE WHALE TOUCHES ── */
-
-/* faint "3301" watermark sitting inside the hero */
-.site-header::after {
-    content: '3301';
-    position: absolute;
-    bottom: 6px;
-    right: 20px;
-    font-family: monospace;
-    font-size: 88px;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.04);
-    letter-spacing: -2px;
-    pointer-events: none;
-    user-select: none;
-    line-height: 1;
-}
-
-/* cryptic number strip below the banner — only visible if you look */
+/* ── HIDDEN ELEMENTS ────────────────────── */
 .cryptic-bar {
     font-family: monospace;
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.13);
+    color: rgba(180, 0, 0, 0.1);
     letter-spacing: 7px;
     margin-top: 20px;
     text-align: center;
@@ -554,7 +704,6 @@ a:hover {
     z-index: 1;
 }
 
-/* whale silhouette — barely there, bottom-left of hero */
 .whale-ghost {
     position: absolute;
     bottom: 10px;
@@ -563,47 +712,274 @@ a:hover {
     font-size: 9px;
     line-height: 1.25;
     white-space: pre;
-    color: rgba(255, 255, 255, 0.05);
+    color: rgba(139, 0, 0, 0.06);
     pointer-events: none;
     user-select: none;
 }
 
-/* mystery line in every footer — invisible until hovered */
 .mystery-seal {
-    font-family: monospace;
-    font-size: 10px;
-    color: #1a0f2e;
-    letter-spacing: 2px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    color: #1a0808;
+    letter-spacing: 3px;
     text-align: center;
     margin-top: 6px;
     transition: color 0.5s;
     cursor: default;
     user-select: none;
+    text-transform: uppercase;
 }
 
-.mystery-seal:hover {
-    color: #4b2a6e;
-}
+.mystery-seal:hover { color: #5a2818; }
 
 /* EOF */
-.eof { color: #1f1340; margin-top: 24px; font-size: 11px; font-family: monospace; }
+.eof { color: #2a0e08; margin-top: 24px; font-size: 11px; font-family: monospace; }
+
+/* ── BLOOD DRIPS ────────────────────────── */
+.blood-drips-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 998;
+}
+
+.blood-drip {
+    position: absolute;
+    top: 0;
+    background: linear-gradient(to bottom, #6b0000 0%, #bb0000 55%, #8b0000 100%);
+    border-radius: 0 0 50% 50%;
+    opacity: 0;
+    animation: drip-grow linear infinite;
+}
+
+@keyframes drip-grow {
+    0%   { height: 0;              opacity: 0;   }
+    6%   { opacity: 0.85; }
+    65%  { height: var(--drip-h); opacity: 0.85; }
+    82%  { height: var(--drip-h); opacity: 0.5;  }
+    100% { height: 0;              opacity: 0;   }
+}
+
+/* ── BLOOD SPLATTER ─────────────────────── */
+.blood-splat {
+    position: fixed;
+    transform: translate(-50%, -50%) scale(0) rotate(var(--rot, 0deg));
+    border-radius: 50% 38% 62% 28% / 48% 62% 38% 52%;
+    background: radial-gradient(ellipse at 38% 38%, #dd0000 0%, #8b0000 55%, #4a0000 85%, transparent 100%);
+    pointer-events: none;
+    z-index: 9999;
+    animation: splat-burst 0.9s ease-out forwards;
+}
+
+@keyframes splat-burst {
+    0%   { transform: translate(-50%, -50%) scale(0)   rotate(var(--rot, 0deg)); opacity: 1;   }
+    25%  { transform: translate(-50%, -50%) scale(1.1) rotate(var(--rot, 0deg)); opacity: 0.95; }
+    100% { transform: translate(-50%, -50%) scale(2.2) rotate(var(--rot, 0deg)); opacity: 0;   }
+}
+
+/* ── RDR2 DOCUMENT — ABOUT PAGE ─────────── */
+
+.rdr-doc {
+    max-width: 620px;
+    margin: 36px auto 48px;
+    background: #0c0906;
+    padding: 0 52px;
+    font-family: 'Crimson Text', Georgia, serif;
+}
+
+.rdoc-rule {
+    border: none;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #6b3a18 20%, #6b3a18 80%, transparent);
+    margin: 0;
+}
+
+.rdoc-header {
+    text-align: center;
+    padding: 30px 0 26px;
+}
+
+.rdoc-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    color: #4a2a0e;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
+
+.rdoc-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #f0e8d8;
+    letter-spacing: 4px;
+    font-variant: small-caps;
+    margin-bottom: 10px;
+}
+
+.rdoc-subtitle {
+    font-family: 'Crimson Text', serif;
+    font-size: 13px;
+    color: #7a5030;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-style: italic;
+}
+
+.rdoc-body {
+    padding: 24px 0 10px;
+    text-align: left;
+}
+
+.rdoc-body p {
+    font-size: 16px;
+    line-height: 1.9;
+    color: #b89060;
+    margin: 0 0 20px;
+    text-align: justify;
+}
+
+.rdoc-row {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 9px;
+    font-size: 15px;
+}
+
+.rdoc-key {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #8b5a2b;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    white-space: nowrap;
+    min-width: 72px;
+}
+
+.rdoc-dots {
+    flex: 1;
+    border-bottom: 1px dotted #2a1806;
+    margin: 0 10px 3px;
+}
+
+.rdoc-val {
+    color: #c4a882;
+    font-size: 15px;
+    font-family: 'Crimson Text', serif;
+}
+
+.rdoc-divider {
+    text-align: center;
+    color: #4a2a10;
+    font-size: 14px;
+    letter-spacing: 5px;
+    margin: 20px 0;
+    font-family: 'Crimson Text', serif;
+}
+
+.rdoc-section {
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.rdoc-section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    font-weight: 700;
+    color: #8b5a2b;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.rdoc-inline {
+    font-family: 'Crimson Text', serif;
+    font-size: 15px;
+    color: #9c7850;
+    line-height: 1.7;
+}
+
+.rdoc-closing {
+    text-align: center;
+    padding: 20px 0 28px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.rdoc-closing a {
+    color: #7a5030;
+    text-decoration: none;
+}
+
+.rdoc-closing a:hover {
+    color: #c4a060;
+    text-decoration: none;
+}
+
+/* ── SADIE PORTRAIT — ABOUT PAGE ────────── */
+.sadie-figure {
+    max-width: 620px;
+    margin: 32px auto 0;
+    padding: 0;
+    position: relative;
+    display: block;
+    border: 1px solid #3a1e08;
+    border-bottom: none;
+    overflow: hidden;
+}
+
+.sadie-portrait {
+    display: block;
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    object-position: center 20%;
+    filter: sepia(90%) contrast(1.25) brightness(0.42) hue-rotate(-8deg);
+    margin: 0;
+}
+
+/* Bottom fade — melts the portrait into the document below */
+.sadie-vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.10) 0%,
+        transparent          30%,
+        rgba(0, 0, 0, 0.30) 70%,
+        rgba(12, 9, 6, 1.00) 100%
+    );
+    pointer-events: none;
+}
 
 /* BASE */
 img { max-width: 100%; height: auto; }
 
 /* MOBILE */
 @media (max-width: 600px) {
-    .content { padding: 0 14px 32px; }
-    .site-header { padding: 40px 16px 36px; }
+    .content { padding: 16px 14px 32px; }
+    .site-header { padding: 40px 16px 38px; }
     .site-banner { max-width: 240px; }
-    .site-title-text { font-size: 36px; }
-    .promo-banner { font-size: 13px; width: 100%; padding: 8px 12px; }
+    .site-title-text { font-size: 46px; }
+    .promo-banner { font-size: 14px; width: 100%; padding: 8px 12px; }
     .terms { padding: 0 4px; }
     .news-container { padding: 12px; }
-    .dossier { padding: 16px 12px; }
-    .dossier-profile { flex-direction: column; }
-    .dossier-avatar, .dossier-avatar img { width: 80px; height: 80px; min-width: 80px; }
+    .sadie-figure { margin: 16px auto 0; }
+    .sadie-portrait { height: 200px; }
+    .rdr-doc { padding: 0 18px; }
+    .rdoc-name { font-size: 20px; letter-spacing: 2px; }
+    .rdoc-body p { text-align: left; }
     .post pre { font-size: 11px; }
     .navbar { padding: 0 12px; gap: 2px; }
-    .navbar a { padding: 6px 8px; font-size: 12px; }
+    .navbar a { padding: 6px 8px; font-size: 9px; }
+    .site-title-text { font-size: 44px; letter-spacing: 2px; }
+    .rdr-menu-panel { width: 85vw; padding: 48px 32px; height: 100vh; }
+    .rdr-menu-item { font-size: 22px; }
+    .rdr-menu-close { left: 32px; }
 }

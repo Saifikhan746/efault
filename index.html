@@ -8,23 +8,28 @@
 </head>
 <body>
 
-    <!-- Top Navigation Bar -->
     <nav class="navbar">
-        <a href="index.html" class="active">Home</a>
-        <a href="blog.html">Blog</a>
-        <a href="about.html">About</a>
+        <span class="navbar-brand">EFAULT</span>
+        <button class="nav-trigger" id="navTrigger" aria-label="Open menu">&#9776;</button>
     </nav>
+
+    <div class="rdr-menu-overlay" id="rdrMenuOverlay">
+        <div class="rdr-menu-dimmer" id="rdrMenuDimmer"></div>
+        <nav class="rdr-menu-panel">
+            <img src="assets/antique.png" class="menu-antique" alt="">
+            <a href="index.html" class="rdr-menu-item active">Home</a>
+            <a href="blog.html"  class="rdr-menu-item">Blog</a>
+            <a href="about.html" class="rdr-menu-item">About</a>
+            <button class="rdr-menu-close" id="rdrMenuClose">&#10005; &nbsp; Close</button>
+        </nav>
+    </div>
 
     <div class="content">
 
         <!-- Banner -->
         <div class="site-header">
-            <div class="hero-logos">
-                <img src="assets/Tor_logo1.png" alt="Tor" class="hero-logo">
-                <div class="site-title-text">EFAULT</div>
-                <img src="assets/i2pd.png" alt="i2pd" class="hero-logo">
-            </div>
-            <div class="site-subtitle"> I N T E R N E T &nbsp; I S &nbsp; W E I R D</div>
+            <img src="assets/dear.gif" alt="EFAULT" class="hero-gif">
+            <div class="hero-tagline">I N T E R N E T &nbsp; I S &nbsp; W E I R D</div>
         </div>
 
         <!-- Alphabet Navigation -->
@@ -44,7 +49,7 @@
             <ol>
                 <li>First of all I am not a pro in any of things.</li>
                 <li>I will always learn and try to implement it</li>
-                <li>I am a privacy enthusiast and I love contributing to those projects that delivers the message of privacy. Thanks to 1033[::-1] for teaching me about this topic alot</li>
+                <li>I am a privacy enthusiast and I love contributing to those projects that delivers the message of privacy.</li>
                 <li>Here you can just read my blogs, I like to post about everything that I like</li>
                 <li>For example Reverse Engineering, Exploitation, Privacy, Cryptography and Ciphers as well as Hardware</li>
                 <li>Career wise I am more focused towards Dev/Devsecops</li>
@@ -53,9 +58,11 @@
         <!-- Footer -->
         <div class="site-footer">
             <p style="font-size: 10px;">&copy; EFAULT - All rights reserved.</p>
-            <div class="mystery-seal">the puzzle is never truly solved &nbsp;·&nbsp; 3301</div>
+            <div class="mystery-seal">EMERGENCE</div>
         </div>
 
     </div>
+    <script src="menu.js"></script>
+    <script src="blood.js"></script>
 </body>
 </html>
