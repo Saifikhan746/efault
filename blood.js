@@ -1,4 +1,6 @@
 (function () {
+    var isMobile = window.innerWidth < 768;
+
     /* ── Blood Drips ─────────────────────────────────────────────── */
     var dripsData = [
         { left:  '2%', h: 72,  delay: 0,   dur: 9  },
@@ -14,6 +16,8 @@
         { left: '97%', h: 76,  delay: 4.1, dur: 9  },
     ];
 
+    if (isMobile) dripsData = dripsData.filter(function(_, i) { return i % 2 === 0; });
+
     var container = document.createElement('div');
     container.className = 'blood-drips-container';
     document.body.appendChild(container);
@@ -24,9 +28,9 @@
         var w = (2 + Math.random() * 2.5).toFixed(1);
         drip.style.left            = d.left;
         drip.style.width           = w + 'px';
+        drip.style.height          = d.h + 'px';
         drip.style.animationDelay  = d.delay + 's';
         drip.style.animationDuration = d.dur + 's';
-        drip.style.setProperty('--drip-h', d.h + 'px');
         container.appendChild(drip);
     });
 

@@ -22,6 +22,7 @@
         wrap.appendChild(panel);
 
         /* Blood drips along the top of the panel */
+        var isMobile = window.innerWidth < 768;
         var dripsData = [
             { left:  '5%', h: 90,  w: 2, dur: 7,   delay: 0    },
             { left: '12%', h: 140, w: 3, dur: 9.5, delay: 1.8  },
@@ -34,12 +35,13 @@
             { left: '88%', h: 155, w: 2, dur: 11,  delay: 3.7  },
             { left: '95%', h: 60,  w: 3, dur: 6.5, delay: 0.9  },
         ];
+        if (isMobile) dripsData = dripsData.filter(function(_, i) { return i % 2 === 0; });
         dripsData.forEach(function (d) {
             var el = document.createElement('div');
             el.className = 'menu-drip';
             el.style.left = d.left;
-            el.style.setProperty('--md-w',   d.w   + 'px');
-            el.style.setProperty('--md-h',   d.h   + 'px');
+            el.style.height = d.h + 'px';
+            el.style.setProperty('--md-w',    d.w   + 'px');
             el.style.setProperty('--md-dur',  d.dur  + 's');
             el.style.setProperty('--md-delay', d.delay + 's');
             panel.appendChild(el);
