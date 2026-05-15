@@ -19,7 +19,7 @@
     <div class="rdr-menu-overlay" id="rdrMenuOverlay">
         <div class="rdr-menu-dimmer" id="rdrMenuDimmer"></div>
         <nav class="rdr-menu-panel">
-            <img src="assets/antique.png" class="menu-antique" alt="">
+            <img src="assets/arthur.jpg" class="menu-antique" alt="">
             <a href="index.html" class="rdr-menu-item">Home</a>
             <a href="blog.html"  class="rdr-menu-item active">Blog</a>
             <a href="about.html" class="rdr-menu-item">About</a>
@@ -27,10 +27,10 @@
         </nav>
     </div>
 
-    <div class="content">
+<div class="content">
         <div class="rdr-letter">
             <div class="post-back"><a href="blog.html">&#8592; back to blog</a></div>
-            <div class="rdr-letter-rule"></div>
+            <div id="post-header" class="post-header"></div>
             <div id="post" class="post"></div>
             <div class="rdr-letter-rule rdr-letter-rule--bottom"></div>
             <div class="eof">-- EOF --</div>
@@ -50,10 +50,15 @@
             }
 
             try {
-                const res = await fetch(`posts/${file}.md`);
-                if (!res.ok) throw new Error("not found");
-                const text = await res.text();
+                const [mdRes, idxRes] = await Promise.all([
+                    fetch(`posts/${file}.md`),
+                    fetch(`posts/index.json`)
+                ]);
+                if (!mdRes.ok) throw new Error("not found");
+
+                const text = await mdRes.text();
                 postDiv.innerHTML = marked.parse(text);
+
                 postDiv.querySelectorAll("pre code").forEach(el => {
                     if (!el.className || el.className.trim() === "") {
                         const result = hljs.highlightAuto(el.textContent);
@@ -63,6 +68,26 @@
                         hljs.highlightElement(el);
                     }
                 });
+
+                if (idxRes.ok) {
+                    const index = await idxRes.json();
+                    const meta = index.find(p => p.file.replace(/^posts\//, "").replace(/\.md$/, "") === file);
+                    if (meta) {
+                        const h1 = postDiv.querySelector("h1");
+                        if (h1) h1.remove();
+
+                        const header = document.getElementById("post-header");
+                        const imgHtml = meta.image
+                            ? `<div class="post-header-img-wrap"><img src="${meta.image}" class="post-header-img" alt=""><div class="post-header-img-fade"></div></div>`
+                            : '';
+                        header.innerHTML = `
+                            ${imgHtml}
+                            <h1 class="post-header-title">${meta.title}</h1>
+                            <div class="post-header-date">${meta.date}</div>
+                            <div class="post-header-rule"></div>
+                        `;
+                    }
+                }
             } catch {
                 postDiv.innerHTML = "<p style='color:#8b1a1a'>[ERROR] could not load post.</p>";
             }

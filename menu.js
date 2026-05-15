@@ -45,25 +45,6 @@
             panel.appendChild(el);
         });
 
-        /* Blood splatter spots scattered on the panel */
-        var splatsData = [
-            { top: '18%', left: '10%', w: 55,  h: 38 },
-            { top: '35%', left: '65%', w: 44,  h: 44 },
-            { top: '55%', left: '20%', w: 70,  h: 48 },
-            { top: '70%', left: '55%', w: 38,  h: 38 },
-            { top: '82%', left: '12%', w: 52,  h: 32 },
-            { top: '25%', left: '80%', w: 30,  h: 30 },
-            { top: '62%', left: '78%', w: 60,  h: 40 },
-        ];
-        splatsData.forEach(function (s) {
-            var el = document.createElement('div');
-            el.className = 'menu-splat-spot';
-            el.style.top    = s.top;
-            el.style.left   = s.left;
-            el.style.width  = s.w + 'px';
-            el.style.height = s.h + 'px';
-            panel.appendChild(el);
-        });
     }
 
     /* ── Toggle logic ────────────────────────────────────────────── */

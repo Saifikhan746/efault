@@ -7,6 +7,7 @@
   {
     "file": "posts/first-post.md",
     "title": "First System Log",
-    "date": "2026-01-01"
+    "date": "2026-01-01",
+    "image": "assets/first-post/image.jpg"
   }
 ]
