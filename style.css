@@ -16,6 +16,12 @@
 
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -1192,6 +1198,45 @@ a:hover {
 img { max-width: 100%; height: auto; }
 
 /* MOBILE */
+/* ── MOBILE PERFORMANCE ─────────────────── */
+@media (max-width: 768px) {
+    body {
+        background-image: none;
+        background-attachment: scroll;
+    }
+
+    .rdr-menu-dimmer {
+        backdrop-filter: none;
+        background: rgba(0, 0, 0, 0.88);
+    }
+
+    .rdr-letter::before {
+        filter: none;
+    }
+
+    .menu-drip {
+        animation: none;
+        display: none;
+    }
+
+    .blood-drip {
+        animation: none;
+        display: none;
+    }
+
+    .blood-splat {
+        display: none;
+    }
+
+    .rdr-chapter-img {
+        will-change: auto;
+    }
+
+    .rdr-menu-panel {
+        will-change: clip-path;
+    }
+}
+
 @media (max-width: 600px) {
     .content { padding: 16px 14px 32px; }
     .site-header { padding: 40px 16px 38px; }
@@ -1211,7 +1256,19 @@ img { max-width: 100%; height: auto; }
     .site-title-text { font-size: 44px; letter-spacing: 2px; }
     .rdr-menu-panel { width: 85vw; padding: 220px 32px 80px; height: 100vh; justify-content: flex-start; }
     .rdr-menu-item { font-size: 36px; }
-    .rdr-menu-close { left: 50%; transform: translateX(-50%); bottom: 24px; font-size: 18px; }
+    .rdr-menu-close {
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 72px;
+        font-size: 20px;
+        padding: 12px 36px;
+        border: 1px solid rgba(139, 0, 0, 0.60);
+        background: rgba(20, 0, 0, 0.55);
+        color: rgba(240, 220, 190, 0.90);
+        letter-spacing: 3px;
+        box-shadow: 0 0 18px rgba(100, 0, 0, 0.30), inset 0 0 12px rgba(0,0,0,0.40);
+        border-radius: 1px;
+    }
     .rdr-letter { padding: 32px 22px 48px; }
     .post-header-title { font-size: 54px; }
     .letter-salutation { font-size: 42px; }
